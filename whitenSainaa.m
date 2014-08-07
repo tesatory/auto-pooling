@@ -1,0 +1,11 @@
+function [Xwh,Wh,mu] = whitenSainaa(X,noise_red)
+mu = mean(X); 
+X = bsxfun(@minus, X, mu);
+A = X'*X / size(X,1);
+[V,D] = eig(A);
+D2=diag(D);
+m = floor(size(D2,1) * noise_red);
+D2=diag(D2.^-0.5);
+D2(1:m,1:m) = 0;
+Wh = (V*D2*V');
+Xwh = X*Wh;
